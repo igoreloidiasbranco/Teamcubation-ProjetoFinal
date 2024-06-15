@@ -6,8 +6,12 @@ import com.futebol.partidas.entity.ClubeEntity;
 import com.futebol.partidas.service.ClubeServiceImpl;
 import com.futebol.partidas.exception.NotFoundException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,6 +27,7 @@ public class ClubeController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<ClubeResponseDTO> salvar(@RequestBody ClubeRequestDTO clubeRequestDTO) {
 
         ClubeEntity clubeEntity = new ClubeEntity();
@@ -38,6 +43,7 @@ public class ClubeController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<ClubeResponseDTO> editar(@PathVariable Long id, @RequestBody ClubeRequestDTO clubeRequestDTO) {
 
         Optional<ClubeEntity> clubeEntityOptional = clubeServiceImpl.buscarPorId(id);
@@ -57,4 +63,48 @@ public class ClubeController {
 
         return ResponseEntity.ok(clubeResponseDTO);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity inativar(@PathVariable Long id) {
+
+        Optional<ClubeEntity> clubeEntityOptional = clubeServiceImpl.buscarPorId(id);
+
+        if (clubeEntityOptional.isEmpty()) {
+
+            throw new NotFoundException("Id não encontrado");
+        }
+
+        clubeServiceImpl.inativarPorId(clubeEntityOptional.get().getId());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ClubeResponseDTO> consultar(@PathVariable Long id) {
+        Optional<ClubeEntity> clubeEntityOptional = clubeServiceImpl.buscarPorId(id);
+
+        if (clubeEntityOptional.isEmpty()) {
+
+            throw new NotFoundException("Id não encontrado");
+        }
+
+        ClubeResponseDTO clubeResponseDTO = new ClubeResponseDTO(
+                clubeEntityOptional.get().getId(),
+                clubeEntityOptional.get().getNome(),
+                clubeEntityOptional.get().getSigla(),
+                clubeEntityOptional.get().getData(),
+                clubeEntityOptional.get().getAtivo());
+
+        return ResponseEntity.ok(clubeResponseDTO);
+
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ClubeResponseDTO>> listar(@PageableDefault (size = 5, sort = {"nome"}) Pageable paginacao){
+        Page page = clubeServiceImpl.listar(paginacao).map(ClubeResponseDTO::new);
+        return ResponseEntity.ok(page);
+
+    }
+
 }
