@@ -2,6 +2,8 @@ package com.futebol.partidas.service;
 
 import com.futebol.partidas.entity.ClubeEntity;
 import com.futebol.partidas.repository.ClubeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,5 +26,16 @@ public class ClubeServiceImpl implements ClubeService{
     @Override
     public Optional<ClubeEntity> buscarPorId(Long id) {
         return clubeRepository.findById(id);
+    }
+
+    @Override
+    public void inativarPorId(Long id) {
+        ClubeEntity clubeEntity = clubeRepository.getReferenceById(id);
+        clubeEntity.desativar();
+    }
+
+    @Override
+    public Page<ClubeEntity> listar(Pageable paginacao) {
+        return clubeRepository.findAll(paginacao);
     }
 }
