@@ -30,4 +30,7 @@ public class ClubeEntity {
     @Column(nullable = false)
     private Boolean ativo;
 
+    public void desativar() {
+        this.ativo = false;
+    }
 }
