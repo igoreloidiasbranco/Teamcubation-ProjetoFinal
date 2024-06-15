@@ -2,17 +2,16 @@ package com.futebol.partidas.entity;
 
 import com.futebol.partidas.dto.Sigla;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "clubes")
-@Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClubeEntity {
 
     @Id
