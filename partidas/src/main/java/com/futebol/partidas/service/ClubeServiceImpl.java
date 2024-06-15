@@ -4,6 +4,8 @@ import com.futebol.partidas.entity.ClubeEntity;
 import com.futebol.partidas.repository.ClubeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClubeServiceImpl implements ClubeService{
 
@@ -14,8 +16,13 @@ public class ClubeServiceImpl implements ClubeService{
     }
 
     @Override
-    public ClubeEntity cadastrar(ClubeEntity clubeEntity) {
+    public ClubeEntity salvar(ClubeEntity clubeEntity) {
 
         return clubeRepository.save(clubeEntity);
+    }
+
+    @Override
+    public Optional<ClubeEntity> buscarPorId(Long id) {
+        return clubeRepository.findById(id);
     }
 }
