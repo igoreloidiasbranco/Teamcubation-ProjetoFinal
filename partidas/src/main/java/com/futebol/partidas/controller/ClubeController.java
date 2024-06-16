@@ -5,6 +5,7 @@ import com.futebol.partidas.dto.response.ClubeResponseDTO;
 import com.futebol.partidas.entity.ClubeEntity;
 import com.futebol.partidas.service.ClubeServiceImpl;
 import com.futebol.partidas.exception.NotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class ClubeController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ClubeResponseDTO> salvar(@RequestBody ClubeRequestDTO clubeRequestDTO) {
+    public ResponseEntity<ClubeResponseDTO> salvar(@RequestBody @Valid ClubeRequestDTO clubeRequestDTO) {
 
         ClubeEntity clubeEntity = new ClubeEntity();
 
