@@ -1,6 +1,7 @@
 package com.futebol.partidas.service;
 
 import com.futebol.partidas.entity.ClubeEntity;
+import com.futebol.partidas.exception.NomeExistsException;
 import com.futebol.partidas.repository.ClubeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,12 @@ public class ClubeServiceImpl implements ClubeService{
 
     @Override
     public ClubeEntity salvar(ClubeEntity clubeEntity) {
+
+        boolean nomeExiste = clubeRepository.existsByNomeAndSigla(clubeEntity.getNome(), clubeEntity.getSigla());
+
+        if(nomeExiste) {
+            throw new NomeExistsException("Nome já se encontra registrado");
+        }
 
         return clubeRepository.save(clubeEntity);
     }
