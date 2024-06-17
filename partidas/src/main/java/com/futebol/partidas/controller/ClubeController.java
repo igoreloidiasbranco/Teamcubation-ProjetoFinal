@@ -45,7 +45,7 @@ public class ClubeController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ClubeResponseDTO> editar(@PathVariable Long id, @RequestBody ClubeRequestDTO clubeRequestDTO) {
+    public ResponseEntity<ClubeResponseDTO> editar(@PathVariable Long id, @RequestBody @Valid ClubeRequestDTO clubeRequestDTO) {
 
         Optional<ClubeEntity> clubeEntityOptional = clubeServiceImpl.buscarPorId(id);
 
