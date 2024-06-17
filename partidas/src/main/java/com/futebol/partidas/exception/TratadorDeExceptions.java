@@ -13,5 +13,8 @@ public class TratadorDeExceptions {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-
+    @ExceptionHandler
+    public ResponseEntity<String> handleNomeExistsException(NomeExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
