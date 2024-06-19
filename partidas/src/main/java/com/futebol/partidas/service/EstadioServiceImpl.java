@@ -6,6 +6,7 @@ import com.futebol.partidas.repository.EstadioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class EstadioServiceImpl implements EstadioService{
@@ -33,5 +34,10 @@ public class EstadioServiceImpl implements EstadioService{
     @Override
     public Page<EstadioEntity> listar(Pageable paginacao) {
         return estadioRepository.findAll(paginacao);
+    }
+
+    @Override
+    public Optional<EstadioEntity> buscarPorId(Long id) {
+        return estadioRepository.findById(id);
     }
 }
